@@ -1,24 +1,24 @@
 {
-  "name": "zotero-clean-urls",
+  "name": "zotero-reference-check",
   "type": "module",
-  "version": "1.1.1",
-  "description": "Removes library-database and proxy links (EBSCO, ProQuest, JSTOR…) that clutter APA reference lists, after confirmation",
+  "version": "2.0.0",
+  "description": "Gets references ready for submission: cleans database leftovers out of them and fills missing details from Crossref, after confirmation",
   "config": {
-    "addonName": "Zotero Clean URLs",
-    "addonID": "cleanurls@korhonenaleksi.github.io",
-    "addonRef": "cleanurls",
-    "addonInstance": "CleanURLs",
-    "prefsPrefix": "extensions.zotero.cleanurls"
+    "addonName": "Zotero Reference Check",
+    "addonID": "referencecheck@korhonenaleksi.github.io",
+    "addonRef": "referencecheck",
+    "addonInstance": "ReferenceCheck",
+    "prefsPrefix": "extensions.zotero.referencecheck"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/KorhonenAleksi/zotero-clean-urls.git"
+    "url": "git+https://github.com/KorhonenAleksi/zotero-reference-check.git"
   },
   "author": "Aleksi Korhonen",
   "bugs": {
-    "url": "https://github.com/KorhonenAleksi/zotero-clean-urls/issues"
+    "url": "https://github.com/KorhonenAleksi/zotero-reference-check/issues"
   },
-  "homepage": "https://github.com/KorhonenAleksi/zotero-clean-urls#readme",
+  "homepage": "https://github.com/KorhonenAleksi/zotero-reference-check#readme",
   "license": "AGPL-3.0-or-later",
   "scripts": {
     "start": "zotero-plugin serve",

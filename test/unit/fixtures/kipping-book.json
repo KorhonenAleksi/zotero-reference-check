@@ -1,0 +1,44 @@
+{
+  "items": [
+    {
+      "DOI": "10.1093/acprof:oso/9780199646890.001.0001",
+      "type": "edited-book",
+      "title": ["Organizations in Time"],
+      "subtitle": ["History, Theory, Methods"],
+      "publisher": "Oxford University Press",
+      "ISBN": ["9780199646890"],
+      "editor": [
+        {
+          "given": "Marcelo",
+          "family": "Bucheli",
+          "sequence": "first",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "editor"
+            }
+          ]
+        },
+        {
+          "given": "R. Daniel",
+          "family": "Wadhwani",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "editor"
+            }
+          ]
+        }
+      ],
+      "issued": {
+        "date-parts": [[2013, 12, 12]]
+      },
+      "published-print": {
+        "date-parts": [[2013, 12, 12]]
+      }
+    }
+  ]
+}

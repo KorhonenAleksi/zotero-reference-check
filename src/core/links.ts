@@ -2,7 +2,8 @@
  * Pure rules for spotting URLs that should not appear in a reference list:
  * library-database links, institutional proxy links, and academic social
  * networks. No Zotero dependency, so everything here is unit-tested in Node
- * (test/unit/links.test.ts).
+ * (test/unit/links.test.ts). The rules that decide what to change on an item
+ * live in references.ts.
  *
  * APA 7 says not to include database URLs for works found in
  * academic research databases; the same goes for proxy links, which only
@@ -99,39 +100,6 @@ export function classifyLink(url: string | null | undefined): LinkMatch | null {
   return null;
 }
 
-export interface ItemFields {
-  itemType: string;
-  url?: string;
-  DOI?: string;
-  extra?: string;
-}
-
-function hasDoi(item: ItemFields): boolean {
-  if (item.DOI?.trim()) return true;
-  // Types without a DOI field keep it in Extra ("DOI: 10.…"), which citation
-  // styles read too.
-  return /^\s*DOI:\s*10\.\S+/im.test(item.extra ?? "");
-}
-
-/**
- * The link to remove from an item, or null to leave it alone. Items with a
- * DOI are skipped: styles print the DOI instead of the URL, so the link never
- * reaches the reference list.
- */
-export function linkToRemove(item: ItemFields): LinkMatch | null {
-  if (!CLEANABLE_TYPES.has(item.itemType)) return null;
-  if (hasDoi(item)) return null;
-  return classifyLink(item.url);
-}
-
-export interface PlannedRemoval {
-  /** e.g. "Langley (1999)" */
-  citation: string;
-  title: string;
-  url: string;
-  match: LinkMatch;
-}
-
 function shorten(s: string, max: number): string {
   return s.length > max ? s.slice(0, max - 1).trimEnd() + "…" : s;
 }
@@ -145,62 +113,4 @@ export function displayLink(url: string, max = 70): string {
       .replace(/^www\./i, ""),
     max,
   );
-}
-
-/**
- * Two lines per item for the confirmation dialog (the item, then the link
- * that will be removed), capped at `limit` items with a final "…and N more".
- */
-export function formatRemovalList(
-  removals: PlannedRemoval[],
-  limit = 12,
-): string {
-  const lines = removals
-    .slice(0, limit)
-    .map(
-      (r) =>
-        `• ${r.citation} — ${shorten(r.title, 60)}\n    ✕ ${displayLink(r.url)}`,
-    );
-  if (removals.length > limit) {
-    lines.push(`…and ${removals.length - limit} more`);
-  }
-  return lines.join("\n");
-}
-
-/** Count per source, e.g. "EBSCO 70, ProQuest 34". */
-export function summarizeSources(removals: PlannedRemoval[]): string {
-  const counts = new Map<string, number>();
-  for (const r of removals) {
-    counts.set(r.match.source, (counts.get(r.match.source) ?? 0) + 1);
-  }
-  return [...counts]
-    .sort((a, b) => b[1] - a[1])
-    .map(([source, n]) => `${source} ${n}`)
-    .join(", ");
-}
-
-export const LOG_HEADER =
-  "removed_at,library_key,item_type,source,title,removed_url";
-
-function csvField(value: string): string {
-  return /[",\n\r]/.test(value) ? `"${value.replace(/"/g, '""')}"` : value;
-}
-
-/** One CSV line for the removal log, so a removed link can be restored. */
-export function logRow(
-  removedAt: string,
-  libraryKey: string,
-  itemType: string,
-  removal: PlannedRemoval,
-): string {
-  return [
-    removedAt,
-    libraryKey,
-    itemType,
-    removal.match.source,
-    removal.title,
-    removal.url,
-  ]
-    .map(csvField)
-    .join(",");
 }

@@ -1,0 +1,40 @@
+{
+  "DOI": "10.1177/01708406231156978",
+  "type": "journal-article",
+  "title": [
+    "Rethinking Historical Methods in Organization Studies: Organizational Source Criticism"
+  ],
+  "subtitle": [],
+  "container-title": ["Organization Studies"],
+  "volume": "44",
+  "issue": "6",
+  "page": "987-1002",
+  "publisher": "SAGE Publications",
+  "author": [
+    {
+      "given": "Michael",
+      "family": "Heller",
+      "sequence": "first",
+      "affiliation": [
+        {
+          "name": "Brunel Business School, Brunel University, UK"
+        }
+      ],
+      "role": [
+        {
+          "vocabulary": "crossref",
+          "role": "author"
+        }
+      ]
+    }
+  ],
+  "issued": {
+    "date-parts": [[2023, 3, 14]]
+  },
+  "published-print": {
+    "date-parts": [[2023, 6]]
+  },
+  "published-online": {
+    "date-parts": [[2023, 3, 14]]
+  }
+}

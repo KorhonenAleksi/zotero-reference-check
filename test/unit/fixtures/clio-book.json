@@ -1,0 +1,71 @@
+{
+  "items": [
+    {
+      "DOI": "10.4324/9781315686103",
+      "type": "book",
+      "title": [
+        "The Routledge Companion to Qualitative Research in Organization Studies"
+      ],
+      "publisher": "Routledge",
+      "ISBN": ["9781315686103"],
+      "author": [
+        {
+          "given": "Raza",
+          "family": "Mir",
+          "sequence": "first",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Sanjay",
+          "family": "Jain",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "editor": [
+        {
+          "given": "Raza",
+          "family": "Mir",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "editor"
+            }
+          ]
+        },
+        {
+          "given": "Sanjay",
+          "family": "Jain",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "editor"
+            }
+          ]
+        }
+      ],
+      "issued": {
+        "date-parts": [[2017, 8, 29]]
+      },
+      "published-online": {
+        "date-parts": [[2017, 8, 29]]
+      }
+    }
+  ]
+}

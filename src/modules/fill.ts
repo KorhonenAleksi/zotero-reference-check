@@ -7,19 +7,26 @@ import {
   formatIncomplete,
   IncompleteItem,
   missingFields,
+  missingTagChanges,
   needsLookup,
   OpenLibraryEdition,
   pickMatch,
   planBookFill,
   planFill,
   searchQuery,
+  unavailableFields,
   wantsBookDetails,
   withChanges,
 } from "../core/crossref";
 import { getString } from "../utils/locale";
-import { cleanRules, referenceStyle } from "../utils/prefs";
 import {
-  alert,
+  cleanRules,
+  referenceStyle,
+  setTagPref,
+  tagPref,
+} from "../utils/prefs";
+import {
+  alertCheck,
   applyPlans,
   citationLabel,
   confirm,
@@ -134,7 +141,14 @@ export async function fillItems(selected: Zotero.Item[]) {
     }))
     .filter(({ snap }) => needsLookup(snap, style));
 
+  // What each selected item still lacks after this run, for the tags.
+  // Items that need no lookup are complete.
+  const stillMissing = new Map<Zotero.Item, string[]>(
+    candidates.map((item) => [item, []]),
+  );
+
   if (!toCheck.length) {
+    if (tagPref()) await updateMissingTags(stillMissing);
     showResult(
       getString("fill-complete", { args: { count: selected.length } }),
     );
@@ -143,6 +157,7 @@ export async function fillItems(selected: Zotero.Item[]) {
 
   const planned: { item: Zotero.Item; plan: PlannedItem }[] = [];
   const incomplete: IncompleteItem[] = [];
+  let unavailable = 0;
   const progress = progressWindow(
     getString("fill-checking", { args: { count: toCheck.length } }),
   );
@@ -182,7 +197,12 @@ export async function fillItems(selected: Zotero.Item[]) {
     const title = field(item, "title");
     if (changes.length)
       planned.push({ item, plan: { citation, title, changes } });
-    const missing = missingFields(withChanges(snap, changes), style);
+    const absent = unavailableFields(snap, work);
+    const missing = missingFields(withChanges(snap, changes), style).filter(
+      (m) => !absent.includes(m),
+    );
+    if (absent.length) unavailable++;
+    stillMissing.set(item, missing);
     if (missing.length) {
       incomplete.push({ citation, title, missing, notFound: !work });
     }
@@ -190,21 +210,34 @@ export async function fillItems(selected: Zotero.Item[]) {
   }
   progress.close();
 
-  const report = incomplete.length
-    ? [
-        "",
-        getString("fill-incomplete", { args: { count: incomplete.length } }),
-        formatIncomplete(incomplete, 10, getString("fill-not-found")),
-      ]
-    : [];
+  const report = [
+    ...(unavailable
+      ? ["", getString("fill-unavailable", { args: { count: unavailable } })]
+      : []),
+    ...(incomplete.length
+      ? [
+          "",
+          getString("fill-incomplete", { args: { count: incomplete.length } }),
+          formatIncomplete(incomplete, 10, getString("fill-not-found")),
+        ]
+      : []),
+  ];
+  const tagBox = {
+    label: getString("fill-tag-checkbox"),
+    value: tagPref(),
+  };
 
   if (!planned.length) {
     if (incomplete.length) {
-      alert(
+      alertCheck(
         getString("fill-confirm-title"),
         [getString("fill-nothing"), ...report].join("\n"),
+        tagBox,
       );
+      setTagPref(tagBox.value);
+      if (tagBox.value) await updateMissingTags(stillMissing);
     } else {
+      if (tagPref()) await updateMissingTags(stillMissing);
       showResult(
         getString("fill-complete", { args: { count: selected.length } }),
       );
@@ -224,9 +257,29 @@ export async function fillItems(selected: Zotero.Item[]) {
       getString("fill-confirm-note"),
     ].join("\n"),
     getString("fill-confirm-button", { args: { count: plans.length } }),
+    tagBox,
   );
   if (!ok) return;
+  setTagPref(tagBox.value);
 
   const saved = await applyPlans(planned);
+  if (tagBox.value) await updateMissingTags(stillMissing);
   showResult(getString("fill-done", { args: { count: saved } }));
+}
+
+/**
+ * Gives each item "Missing: …" tags for what it still lacks and removes the
+ * ones it no longer needs, so the tag selector lists what's left to fix.
+ */
+async function updateMissingTags(stillMissing: Map<Zotero.Item, string[]>) {
+  for (const [item, missing] of stillMissing) {
+    const { add, remove } = missingTagChanges(
+      item.getTags().map((t) => t.tag),
+      missing,
+    );
+    if (!add.length && !remove.length) continue;
+    for (const tag of add) item.addTag(tag);
+    for (const tag of remove) item.removeTag(tag);
+    await item.saveTx();
+  }
 }

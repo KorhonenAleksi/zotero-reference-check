@@ -8,6 +8,8 @@ import {
   formatDate,
   formatIncomplete,
   isSameWork,
+  missingTag,
+  missingTagChanges,
   missingFields,
   needsLookup,
   pickMatch,
@@ -15,6 +17,7 @@ import {
   planFill,
   searchQuery,
   titlesMatch,
+  unavailableFields,
   wantsBookDetails,
   withChanges,
 } from "../../src/core/crossref";
@@ -481,5 +484,67 @@ describe("formatIncomplete", () => {
       "• A1 (2001) — T1: Volume, Pages",
       "…and 1 more",
     ]);
+  });
+});
+
+describe("unavailableFields", () => {
+  const item = article({}, [], "10.1177/x");
+
+  it("treats an online-first article's volume and pages as not existing", () => {
+    expect(unavailableFields(item, { DOI: "10.1177/x" })).toEqual([
+      "volume",
+      "pages",
+    ]);
+  });
+
+  it("treats pages as not existing when the journal has none", () => {
+    // Organization Theory: a volume, and only the OnlineFirst ID as number
+    expect(
+      unavailableFields(item, {
+        DOI: "10.1177/2631787719889977",
+        volume: "1",
+        "article-number": "2631787719889977",
+      }),
+    ).toEqual(["pages"]);
+  });
+
+  it("keeps details Crossref has", () => {
+    expect(unavailableFields(item, heller as CrossrefWork)).toEqual([]);
+    expect(
+      unavailableFields(item, {
+        DOI: "10.1016/x",
+        volume: "57",
+        "article-number": "101381",
+      }),
+    ).toEqual([]);
+  });
+
+  it("only for articles that were found", () => {
+    expect(unavailableFields(item, null)).toEqual([]);
+    expect(unavailableFields(kipping, { DOI: "10.1093/x" })).toEqual([]);
+  });
+});
+
+describe("missing tags", () => {
+  it("names the tag after what's missing", () => {
+    expect(missingTag("editor")).toBe("Missing: editor");
+    expect(missingTag("author|editor")).toBe("Missing: author or editor");
+    expect(missingTag("bookTitle")).toBe("Missing: book title");
+  });
+
+  it("adds what's missing and removes what's been fixed", () => {
+    expect(
+      missingTagChanges(
+        ["history", "Missing: pages", "Missing: editor"],
+        ["editor", "publisher"],
+      ),
+    ).toEqual({ add: ["Missing: publisher"], remove: ["Missing: pages"] });
+  });
+
+  it("removes every Missing tag from a complete item", () => {
+    expect(missingTagChanges(["Missing: pages", "history"], [])).toEqual({
+      add: [],
+      remove: ["Missing: pages"],
+    });
   });
 });

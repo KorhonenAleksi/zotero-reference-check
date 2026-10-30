@@ -1,3 +1,5 @@
+busy = Reference Check is still working on the previous command. Try again when it has finished.
+
 resolving-dois = { $count ->
         [one] Looking up the full form of 1 short DOI…
        *[other] Looking up the full form of { $count } short DOIs…
@@ -34,6 +36,11 @@ fill-incomplete = { $count ->
        *[other] Still incomplete afterwards, fix by hand ({ $count }):
     }
 fill-not-found = not found in Crossref
+fill-unavailable = { $count ->
+        [one] 1 article has no volume or page numbers yet (published online first, or the journal doesn't use pages). It is complete: APA cites it with the DOI.
+       *[other] { $count } articles have no volume or page numbers yet (published online first, or the journal doesn't use pages). They are complete: APA cites them with the DOI.
+    }
+fill-tag-checkbox = Tag items that are still incomplete (“Missing: …”), and untag them once complete
 fill-nothing = Crossref has nothing to add to the selected items.
 fill-confirm-note = + fills an empty field; nothing that is already filled in is changed. Every change is saved to reference-check-log.csv in your Zotero data folder.
 fill-confirm-button = { $count ->

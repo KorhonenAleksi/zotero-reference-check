@@ -3,6 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 export type FluentMessageId =
+  | 'busy'
   | 'clean-confirm-button'
   | 'clean-confirm-intro'
   | 'clean-confirm-note'
@@ -19,6 +20,8 @@ export type FluentMessageId =
   | 'fill-incomplete'
   | 'fill-not-found'
   | 'fill-nothing'
+  | 'fill-tag-checkbox'
+  | 'fill-unavailable'
   | 'menuitem-clean'
   | 'menuitem-fill'
   | 'pref-clean-archiveScans'

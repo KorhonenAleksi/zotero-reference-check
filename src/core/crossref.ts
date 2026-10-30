@@ -534,3 +534,52 @@ export function formatIncomplete(
   if (items.length > limit) lines.push(`…and ${items.length - limit} more`);
   return lines.join("\n");
 }
+
+// --- Details that don't exist ----------------------------------------------
+
+/**
+ * Required details the work itself doesn't have, judging by its Crossref
+ * record, so they are not reported as missing. An article published online
+ * first has no volume or pages yet (APA cites it with the DOI alone), and
+ * some journals, such as Organization Theory, have volumes but no page
+ * numbers. Only applies to journal articles: Crossref's chapter and book
+ * records often leave out editors and publishers that do exist.
+ */
+export function unavailableFields(
+  item: FillSnapshot,
+  work: CrossrefWork | null,
+): string[] {
+  if (!work || item.itemType !== "journalArticle") return [];
+  const hasPages =
+    !!work.page ||
+    (!!work["article-number"] &&
+      !isBogusPages(work["article-number"], work.DOI));
+  if (!work.volume) return ["volume", "pages"];
+  return hasPages ? [] : ["pages"];
+}
+
+// --- Tags for what's still missing -----------------------------------------
+
+export const MISSING_TAG_PREFIX = "Missing: ";
+
+/** "Missing: editor", "Missing: author or editor", … */
+export function missingTag(req: string): string {
+  return MISSING_TAG_PREFIX + describeMissing([req]).toLowerCase();
+}
+
+/**
+ * The tag edits that make an item's "Missing: …" tags match what it still
+ * lacks. Other tags are left alone.
+ */
+export function missingTagChanges(
+  currentTags: string[],
+  missing: string[],
+): { add: string[]; remove: string[] } {
+  const wanted = new Set(missing.map(missingTag));
+  return {
+    add: [...wanted].filter((t) => !currentTags.includes(t)),
+    remove: currentTags.filter(
+      (t) => t.startsWith(MISSING_TAG_PREFIX) && !wanted.has(t),
+    ),
+  };
+}

@@ -97,8 +97,26 @@ Only empty fields are filled, plus leftovers the clean-up would remove anyway
 (page `0`, an article ID in Pages, `44(6)` in Volume), so the order you run
 the two commands in doesn't matter. Anything filled in already stays as it
 is. The dialog also lists the items that will still lack something
-afterwards (for example online-first articles that have no volume yet, or
-works Crossref doesn't have), to fix by hand.
+afterwards (works Crossref doesn't have, chapters whose editors Crossref
+doesn't list…), to fix by hand: click the field in Zotero's item pane and
+type; for an editor, add a creator with **+** and change "Author" to
+"Editor".
+
+Details that don't exist aren't reported as missing. An article published
+online first has no volume or pages yet (APA cites it with the DOI alone),
+and some journals, such as _Organization Theory_, have no page numbers. When
+Crossref's record for an article has no volume, or no pages, those count as
+complete.
+
+Tick **Tag items that are still incomplete** in the dialog to give them tags
+such as `Missing: editor` or `Missing: publisher`. Click a tag in Zotero's
+tag selector to see exactly those items and work through them. The next run
+removes a tag once the item is complete. Only the selected items are tagged
+or untagged, and other tags are never touched. The checkbox remembers its
+setting.
+
+Only one command runs at a time. A change is skipped if its field was edited
+after the dialog was prepared, so a command never undoes a newer edit.
 
 Requests go to Crossref one at a time, as it asks of clients without an API
 key, so checking a few hundred items takes a few minutes. Items that already

@@ -8,3 +8,4 @@ pref("clean.volumeIssue", true);
 pref("clean.extraFields", true);
 pref("clean.catalogueNames", true);
 pref("clean.shortDois", true);
+pref("fill.tagIncomplete", true);

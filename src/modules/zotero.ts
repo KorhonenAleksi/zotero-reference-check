@@ -95,8 +95,16 @@ export async function resolveShortDois(
   return resolved;
 }
 
-/** Shows the confirmation; true when the user clicked the action button. */
-export function confirm(title: string, text: string, button: string): boolean {
+/**
+ * Shows the confirmation; true when the user clicked the action button.
+ * With `checkbox`, its state is written back to `checkbox.value`.
+ */
+export function confirm(
+  title: string,
+  text: string,
+  button: string,
+  checkbox?: { label: string; value: boolean },
+): boolean {
   const ps = Services.prompt;
   // The gecko typings mark these constants optional; they always exist.
   const flags =
@@ -113,31 +121,70 @@ export function confirm(title: string, text: string, button: string): boolean {
     "",
     "",
     // An empty checkbox label hides the checkbox
-    "",
-    { value: false },
+    checkbox?.label ?? "",
+    checkbox ?? { value: false },
   );
   return choice === 0;
 }
 
-export function alert(title: string, text: string) {
-  Services.prompt.alert(
+/** An alert with a checkbox, whose state is written back to `checkbox.value`. */
+export function alertCheck(
+  title: string,
+  text: string,
+  checkbox: { label: string; value: boolean },
+) {
+  Services.prompt.alertCheck(
     Zotero.getMainWindow() as unknown as mozIDOMWindowProxy,
     title,
     text,
+    checkbox.label,
+    checkbox,
   );
 }
 
 export const LOG_FILE = "reference-check-log.csv";
 
+/**
+ * Whether the item still holds the value a change was planned from. It may
+ * not, if the item was edited (or another command saved) while the
+ * confirmation was open; such a change is skipped rather than undoing that
+ * edit.
+ */
+function isCurrent(item: Zotero.Item, c: FieldChange): boolean {
+  const creators = item.getCreators();
+  if (c.addCreators) {
+    const type = c.addCreators[0]?.creatorType;
+    return !creators.some(
+      (cr) => Zotero.CreatorTypes.getName(cr.creatorTypeID) === type,
+    );
+  }
+  if (c.creatorIndex !== undefined) {
+    const creator = creators[c.creatorIndex] as unknown as
+      Record<string, unknown> | undefined;
+    return creator?.[c.field] === c.from;
+  }
+  return field(item, c.field) === c.from;
+}
+
 /** Logs, then saves every planned change. Returns the number of items saved. */
 export async function applyPlans(
   planned: { item: Zotero.Item; plan: PlannedItem }[],
 ): Promise<number> {
+  const current = planned
+    .map(({ item, plan }) => ({
+      item,
+      plan: {
+        ...plan,
+        changes: plan.changes.filter((c) => isCurrent(item, c)),
+      },
+    }))
+    .filter(({ plan }) => plan.changes.length);
+
   // Log before changing anything, so every old value can be restored.
-  await appendToLog(planned);
+  await appendToLog(current);
 
   let saved = 0;
-  for (const { item, plan } of planned) {
+  for (const { item, plan } of current) {
     const changes = await attachLinks(item, plan.changes);
     applyChanges(item, changes);
     await item.saveTx();

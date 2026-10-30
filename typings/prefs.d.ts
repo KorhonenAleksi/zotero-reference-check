@@ -17,6 +17,7 @@ declare namespace _ZoteroTypes {
       "clean.extraFields": boolean;
       "clean.catalogueNames": boolean;
       "clean.shortDois": boolean;
+      "fill.tagIncomplete": boolean;
     };
   }
 }

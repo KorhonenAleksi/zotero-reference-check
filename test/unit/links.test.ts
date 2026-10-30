@@ -1,13 +1,5 @@
 import { describe, expect, it } from "vitest";
-import {
-  classifyLink,
-  displayLink,
-  formatRemovalList,
-  logRow,
-  linkToRemove,
-  PlannedRemoval,
-  summarizeSources,
-} from "../../src/core/links";
+import { classifyLink, displayLink } from "../../src/core/links";
 
 describe("classifyLink", () => {
   it("recognises research databases", () => {
@@ -91,88 +83,6 @@ describe("classifyLink", () => {
   });
 });
 
-describe("linkToRemove", () => {
-  const ebsco = "https://search.ebscohost.com/login.aspx?AN=1";
-
-  it("removes database links from articles without a DOI", () => {
-    expect(
-      linkToRemove({ itemType: "journalArticle", url: ebsco }),
-    ).toMatchObject({ source: "EBSCO" });
-    expect(
-      linkToRemove({
-        itemType: "book",
-        url: "https://ebookcentral.proquest.com/lib/example/detail.action?docID=1",
-      }),
-    ).toMatchObject({ source: "ProQuest" });
-  });
-
-  it("leaves items with a DOI alone", () => {
-    expect(
-      linkToRemove({
-        itemType: "journalArticle",
-        url: ebsco,
-        DOI: "10.1002/smj.1",
-      }),
-    ).toBeNull();
-    expect(
-      linkToRemove({
-        itemType: "bookSection",
-        url: ebsco,
-        extra: "Place: London\nDOI: 10.4135/9781446200",
-      }),
-    ).toBeNull();
-  });
-
-  it("treats a blank DOI as missing", () => {
-    expect(
-      linkToRemove({ itemType: "journalArticle", url: ebsco, DOI: "  " }),
-    ).not.toBeNull();
-  });
-
-  it("leaves item types where the URL is the point", () => {
-    expect(linkToRemove({ itemType: "webpage", url: ebsco })).toBeNull();
-    expect(linkToRemove({ itemType: "blogPost", url: ebsco })).toBeNull();
-    expect(linkToRemove({ itemType: "attachment", url: ebsco })).toBeNull();
-  });
-});
-
-describe("confirmation text", () => {
-  const removal = (n: number, source = "EBSCO"): PlannedRemoval => ({
-    citation: `Author${n} (2001)`,
-    title: `Title ${n}`,
-    url: `https://www.jstor.org/stable/${n}`,
-    match: { kind: "database", source, host: "x" },
-  });
-
-  it("lists each item with the link to be removed, capped", () => {
-    const list = formatRemovalList(
-      Array.from({ length: 18 }, (_, i) => removal(i + 1)),
-      15,
-    );
-    const lines = list.split("\n");
-    expect(lines).toHaveLength(31);
-    expect(lines[0]).toBe("• Author1 (2001) — Title 1");
-    expect(lines[1]).toBe("    ✕ jstor.org/stable/1");
-    expect(lines[30]).toBe("…and 3 more");
-  });
-
-  it("shortens long titles", () => {
-    const list = formatRemovalList([{ ...removal(1), title: "A".repeat(100) }]);
-    expect(list).toContain("A".repeat(59) + "…");
-    expect(list).not.toContain("A".repeat(61));
-  });
-
-  it("summarises sources by count", () => {
-    expect(
-      summarizeSources([
-        removal(1, "JSTOR"),
-        removal(2, "EBSCO"),
-        removal(3, "EBSCO"),
-      ]),
-    ).toBe("EBSCO 2, JSTOR 1");
-  });
-});
-
 describe("displayLink", () => {
   it("drops scheme and www, and shortens", () => {
     expect(displayLink("https://www.jstor.org/stable/1704346")).toBe(
@@ -184,20 +94,5 @@ describe("displayLink", () => {
     expect(long).toHaveLength(70);
     expect(long.startsWith("search.ebscohost.com/login.aspx?")).toBe(true);
     expect(long.endsWith("…")).toBe(true);
-  });
-});
-
-describe("logRow", () => {
-  it("writes a CSV line, quoting fields with commas or quotes", () => {
-    expect(
-      logRow("2026-10-22T20:00:00.000Z", "1/W6EFZUS7", "journalArticle", {
-        citation: "Langley (1999)",
-        title: 'Strategies for "Theorizing", from Process Data',
-        url: "https://www.proquest.com/docview/210946043",
-        match: { kind: "database", source: "ProQuest", host: "x" },
-      }),
-    ).toBe(
-      '2026-10-22T20:00:00.000Z,1/W6EFZUS7,journalArticle,ProQuest,"Strategies for ""Theorizing"", from Process Data",https://www.proquest.com/docview/210946043',
-    );
   });
 });

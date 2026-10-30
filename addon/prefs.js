@@ -1,0 +1,11 @@
+pref("style", "apa");
+pref("clean.databaseLinks", true);
+pref("clean.archiveScans", true);
+pref("clean.databaseFields", true);
+pref("clean.journalNames", true);
+pref("clean.pages", true);
+pref("clean.volumeIssue", true);
+pref("clean.extraFields", true);
+pref("clean.catalogueNames", true);
+pref("clean.shortDois", true);
+pref("fill.tagIncomplete", true);

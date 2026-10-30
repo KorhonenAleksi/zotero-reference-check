@@ -1,0 +1,201 @@
+{
+  "items": [
+    {
+      "DOI": "10.4324/9781315686103-8",
+      "type": "book-chapter",
+      "title": ["Clio’s Toolkit"],
+      "container-title": [
+        "The Routledge Companion to Qualitative Research in Organization Studies"
+      ],
+      "page": "113-127",
+      "publisher": "Routledge",
+      "ISBN": ["9781315686103"],
+      "author": [
+        {
+          "given": "R. Daniel",
+          "family": "Wadhwani",
+          "sequence": "first",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Stephanie",
+          "family": "Decker",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "issued": {
+        "date-parts": [[2017, 8, 29]]
+      },
+      "published-print": {
+        "date-parts": [[2017, 8, 29]]
+      }
+    },
+    {
+      "DOI": "10.1093/ahr/122.2.482",
+      "type": "journal-article",
+      "title": ["Jeremy Black. Clio’s Battles: Historiography in Practice."],
+      "container-title": ["The American Historical Review"],
+      "volume": "122",
+      "issue": "2",
+      "page": "482-483",
+      "publisher": "Oxford University Press (OUP)",
+      "author": [
+        {
+          "given": "Elizabeth A.",
+          "family": "Clark",
+          "sequence": "first",
+          "affiliation": [],
+          "role": [
+            {
+              "role": "author",
+              "vocabulary": "crossref"
+            }
+          ]
+        }
+      ],
+      "issued": {
+        "date-parts": [[2017, 3, 30]]
+      },
+      "published-print": {
+        "date-parts": [[2017, 4]]
+      },
+      "published-online": {
+        "date-parts": [[2017, 3, 30]]
+      }
+    },
+    {
+      "DOI": "10.1177/0170840614564321",
+      "type": "journal-article",
+      "title": [
+        "Book Review: Marcelo Bucheli and R. Daniel Wadhwani (eds)\n                    <i>Organizations in Time: History, Theory, Methods</i>"
+      ],
+      "container-title": ["Organization Studies"],
+      "volume": "36",
+      "issue": "7",
+      "page": "979-982",
+      "publisher": "SAGE Publications",
+      "author": [
+        {
+          "given": "Ludovic",
+          "family": "Cailluet",
+          "sequence": "first",
+          "affiliation": [
+            {
+              "name": "University of the Littoral and University of Toulouse (CRM-CNRS), France"
+            }
+          ],
+          "role": [
+            {
+              "role": "author",
+              "vocabulary": "crossref"
+            }
+          ]
+        }
+      ],
+      "issued": {
+        "date-parts": [[2015, 6, 9]]
+      },
+      "published-print": {
+        "date-parts": [[2015, 7]]
+      },
+      "published-online": {
+        "date-parts": [[2015, 6, 9]]
+      }
+    },
+    {
+      "DOI": "10.1093/acprof:oso/9780199646890.003.0001",
+      "type": "book-chapter",
+      "title": [
+        "The Future of the Past in Management and Organization Studies"
+      ],
+      "container-title": ["Organizations in Time"],
+      "page": "2-30",
+      "publisher": "Oxford University Press",
+      "ISBN": ["9780199646890"],
+      "author": [
+        {
+          "given": "R. Daniel",
+          "family": "Wadhwani",
+          "sequence": "first",
+          "affiliation": [],
+          "role": [
+            {
+              "role": "author",
+              "vocabulary": "crossref"
+            }
+          ]
+        },
+        {
+          "given": "Marcelo",
+          "family": "Bucheli",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "role": "author",
+              "vocabulary": "crossref"
+            }
+          ]
+        }
+      ],
+      "issued": {
+        "date-parts": [[2013, 12, 12]]
+      },
+      "published-print": {
+        "date-parts": [[2013, 12, 12]]
+      }
+    },
+    {
+      "DOI": "10.1177/01708406231156978",
+      "type": "journal-article",
+      "title": [
+        "Rethinking Historical Methods in Organization Studies: Organizational Source Criticism"
+      ],
+      "container-title": ["Organization Studies"],
+      "volume": "44",
+      "issue": "6",
+      "page": "987-1002",
+      "publisher": "SAGE Publications",
+      "author": [
+        {
+          "given": "Michael",
+          "family": "Heller",
+          "sequence": "first",
+          "affiliation": [
+            {
+              "name": "Brunel Business School, Brunel University, UK"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "issued": {
+        "date-parts": [[2023, 3, 14]]
+      },
+      "published-print": {
+        "date-parts": [[2023, 6]]
+      },
+      "published-online": {
+        "date-parts": [[2023, 3, 14]]
+      }
+    }
+  ]
+}

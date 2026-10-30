@@ -1,0 +1,56 @@
+{
+  "DOI": "10.1093/acprof:oso/9780199646890.003.0013",
+  "type": "book-chapter",
+  "title": [
+    "Analyzing and Interpreting Historical Sources: A Basic Methodology"
+  ],
+  "subtitle": [],
+  "container-title": ["Organizations in Time"],
+  "page": "305-329",
+  "publisher": "Oxford University Press",
+  "ISBN": ["9780199646890"],
+  "author": [
+    {
+      "given": "Matthias",
+      "family": "Kipping",
+      "sequence": "first",
+      "affiliation": [],
+      "role": [
+        {
+          "vocabulary": "crossref",
+          "role": "author"
+        }
+      ]
+    },
+    {
+      "given": "R. Daniel",
+      "family": "Wadhwani",
+      "sequence": "additional",
+      "affiliation": [],
+      "role": [
+        {
+          "vocabulary": "crossref",
+          "role": "author"
+        }
+      ]
+    },
+    {
+      "given": "Marcelo",
+      "family": "Bucheli",
+      "sequence": "additional",
+      "affiliation": [],
+      "role": [
+        {
+          "vocabulary": "crossref",
+          "role": "author"
+        }
+      ]
+    }
+  ],
+  "issued": {
+    "date-parts": [[2013, 12, 12]]
+  },
+  "published-print": {
+    "date-parts": [[2013, 12, 12]]
+  }
+}

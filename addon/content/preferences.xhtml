@@ -1,0 +1,54 @@
+<linkset>
+  <html:link rel="localization" href="__addonRef__-preferences.ftl" />
+</linkset>
+<vbox id="zotero-prefpane-__addonRef__">
+  <groupbox>
+    <label><html:h2 data-l10n-id="pref-style-title" /></label>
+    <description data-l10n-id="pref-style-description" />
+    <radiogroup preference="style">
+      <radio value="apa" data-l10n-id="pref-style-apa" />
+      <radio value="chicago" data-l10n-id="pref-style-chicago" />
+    </radiogroup>
+  </groupbox>
+  <groupbox>
+    <label><html:h2 data-l10n-id="pref-clean-title" /></label>
+    <description data-l10n-id="pref-clean-description" />
+    <checkbox
+      preference="clean.databaseLinks"
+      data-l10n-id="pref-clean-databaseLinks"
+    />
+    <checkbox
+      preference="clean.archiveScans"
+      data-l10n-id="pref-clean-archiveScans"
+    />
+    <checkbox
+      preference="clean.databaseFields"
+      data-l10n-id="pref-clean-databaseFields"
+    />
+    <checkbox
+      preference="clean.journalNames"
+      data-l10n-id="pref-clean-journalNames"
+    />
+    <checkbox preference="clean.pages" data-l10n-id="pref-clean-pages" />
+    <checkbox
+      preference="clean.volumeIssue"
+      data-l10n-id="pref-clean-volumeIssue"
+    />
+    <checkbox
+      preference="clean.extraFields"
+      data-l10n-id="pref-clean-extraFields"
+    />
+    <checkbox
+      preference="clean.catalogueNames"
+      data-l10n-id="pref-clean-catalogueNames"
+    />
+    <checkbox
+      preference="clean.shortDois"
+      data-l10n-id="pref-clean-shortDois"
+    />
+  </groupbox>
+  <groupbox>
+    <label><html:h2 data-l10n-id="pref-privacy-title" /></label>
+    <description data-l10n-id="pref-privacy-description" />
+  </groupbox>
+</vbox>

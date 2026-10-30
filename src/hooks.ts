@@ -1,5 +1,5 @@
 import { initLocale } from "./utils/locale";
-import { registerItemMenu, unregisterItemMenu } from "./modules/cleanLinks";
+import { registerItemMenu, unregisterItemMenu } from "./modules/menu";
 import { createZToolkit } from "./utils/ztoolkit";
 
 async function onStartup() {
@@ -14,6 +14,13 @@ async function onStartup() {
   // Zotero's MenuManager attaches the item to every main window, including
   // ones opened later, so there is no per-window menu wiring.
   registerItemMenu();
+
+  Zotero.PreferencePanes.register({
+    pluginID: addon.data.config.addonID,
+    src: rootURI + "content/preferences.xhtml",
+    label: addon.data.config.addonName,
+    image: `chrome://${addon.data.config.addonRef}/content/icons/favicon.png`,
+  });
 
   await Promise.all(
     Zotero.getMainWindows().map((win) => onMainWindowLoad(win)),
